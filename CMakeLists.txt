@@ -8,6 +8,7 @@ include(cmake/output_paths.cmake)
 find_package(tinyutf8 REQUIRED)
 
 ADD_EXECUTABLE(wordle_solver
+    main.cpp
     wordle_solver.cpp)
 TARGET_LINK_LIBRARIES(wordle_solver
     tinyutf8::tinyutf8)
