@@ -13,12 +13,11 @@ World list should contain one word per line. File should be UTF-8 encoded.
 
 ## English
 
-https://raw.githubusercontent.com/dwyl/english-words/master/words.txt
-
+https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt
 
 ## Finnish
 
-https://github.com/hugovk/everyfinnishword/blob/master/kaikkisanat.txt
+https://github.com/hugovk/everyfinnishword/raw/master/kaikkisanat.txt
 
 # Hint file
 
