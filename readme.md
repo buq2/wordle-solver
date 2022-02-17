@@ -25,15 +25,15 @@ While playing Wordle/Sanuli, fill in hints file based on the game output.
 Hints are formed as follows in the text file:
 - One tried word per line.
 - Each tried character separated by space.
-- Capital letter = this character belongs to this position.
-- Lower case letter = this character does not belong here, but is in the word.
-- Character prefixed with '!' = character not in the word, or character used too many times and not in this position.
+- Prefixed with '.' = this character belongs to this position.
+- Prefixed with '?' = this character does not belong here, but is in the word.
+- Prefixed with '!' character not in the word, or character used too many times and not in this position.
 
 For example
 ```
-!h !e !i !n !ä
-!p !u !l !j A
-!r !a S !t A
+?h !e !i !n !ä
+!p !u !l !j .a
+!r !a .a !t .a
 ```
 
 # Missing features

@@ -39,9 +39,6 @@ void WordleSolver::AddWordsFromFile(const std::string &fname)
     std::string line_std;
     while(std::getline(file, line_std)) {
         tiny_utf8::string line(line_std);
-        for (auto &c : line) {
-            c = tolower(c);
-        }
         if (IsPossibleSolution(line)) {
             words_.push_back(line);
         }
@@ -111,11 +108,11 @@ bool WordleSolver::AddHintParts(const std::vector<tiny_utf8::string> &hint_parts
 {
     auto allows_character = [&](const auto &c) {
         for (const auto &hint : hint_parts) {
-            if (hint.length() == 2) {
+            const auto op = hint[0];
+            if (op == '!') {
                 // We are not interested in "not allowed" hints
                 continue;
-            }
-            if (tolower(hint[0]) == tolower(c)) {
+            } else if (hint[1] == c) {
                 // This character is allowed here, or somewhere else
                 return true;
             }
@@ -126,7 +123,8 @@ bool WordleSolver::AddHintParts(const std::vector<tiny_utf8::string> &hint_parts
     };
     auto disallows_character = [&](const auto &c) {
         for (const auto &hint : hint_parts) {
-            if (hint.length() == 2 && tolower(hint[1]) == tolower(c)) {
+            const auto &op = hint[0];
+            if (op == '!' && hint[1] == c) {
                 return true;
             }
         }
@@ -135,11 +133,12 @@ bool WordleSolver::AddHintParts(const std::vector<tiny_utf8::string> &hint_parts
     auto times_allowed = [&](const auto &c) {
         int count = 0;
         for (const auto &hint : hint_parts) {
-            if (hint.length() == 2) {
+            const auto &op = hint[0];
+            if (op == '!') {
                 // We are not interested in "not allowed" hints
                 continue;
             }
-            if (tolower(hint[0]) == tolower(c)) {
+            if (hint[1] == c) {
                 ++count;
             }
         }
@@ -155,26 +154,26 @@ bool WordleSolver::AddHintParts(const std::vector<tiny_utf8::string> &hint_parts
     for (int location = 0; location < hint_parts.size(); ++location) {
         const auto &hint_part = hint_parts[location];
 
-        // isalpha does not work for utf-8 characters
-        if (hint_part.length() == 1 /*&& isalpha(hint[0])*/) {
-            auto c = hint_part[0];
-            if (islower(c)) {
-                // This character is in the word, but this is not a correct location for it
-                contains_.insert(c);
-                not_here_but_somewhere_else_.push_back({location, c});
-            } else {
-                // This character is in correct location
-                c = tolower(c); // TODO: Does tolower work for umlauts/utf8?
-                contains_.insert(c);
-                
-                const auto t = std::make_tuple(location, c);
-                if (!contains(known_, t)) {
-                    known_.push_back({location, c});
-                }
-            }
-        } else if (hint_part.length() == 2 && hint_part[0] == '!' /*&& isalpha(hint[1])*/) {
-            const auto c = tolower(hint_part[1]);
+        if (hint_part.length() != 2) {
+            std::cerr << "Hint '" << hint_part << "' is malformed" << std::endl;
+            return false;
+        }
 
+        const auto &op = hint_part[0];
+        const auto &c = hint_part[1];
+        if (op == '?') {
+            // This character is in the word, but this is not a correct location for it
+            contains_.insert(c);
+            not_here_but_somewhere_else_.push_back({location, c});
+        } else if (op == '.') {
+            // This character is in correct location
+            contains_.insert(c);
+            
+            const auto t = std::make_tuple(location, c);
+            if (!contains(known_, t)) {
+                known_.push_back({location, c});
+            }
+        } else if (op == '!') {
             if (!allows_character(c)) {
                 does_not_contain_.insert(c);
             } else {

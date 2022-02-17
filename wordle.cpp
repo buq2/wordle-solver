@@ -17,9 +17,6 @@ void Wordle::AddWordsFromFile(const std::string &fname, const int word_length)
         if (line.length() != word_length_) {
             continue;
         }
-        for (auto &c : line) {
-            c = tolower(c);
-        }
         words_.push_back(line);
     }
 }
@@ -79,8 +76,10 @@ void Wordle::MakeGuess(const tiny_utf8::string &guess, tiny_utf8::string &hint)
 
         const auto &c = guess[i];
         if (c == chosen_word_[i]) {
-            hint += toupper(c);
+            hint += ".";
+            hint += c;
         } else if (count[c] > 0) {
+            hint += "?";
             hint += c;
             count[c]--;
         } else {

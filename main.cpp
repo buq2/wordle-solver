@@ -10,9 +10,9 @@ Hintlist contains one tried out word per line.\n\
 Hints are formed as follows in the text file:\n\
 - One tried word per line.\n\
 - Each tried character separated by space.\n\
-- Capital letter = this character belongs to this position.\n\
-- Lower case letter = this character does not belong here, but is in the word.\n\
-- Character prefixed with '!' character not in the word, or character used too many times and not in this position.\n";
+- Prefixed with '.' = this character belongs to this position.\n\
+- Prefixed with '?' = this character does not belong here, but is in the word.\n\
+- Prefixed with '!' character not in the word, or character used too many times and not in this position.\n";
 }
 
 int main(int argc, char *argv[]) {
