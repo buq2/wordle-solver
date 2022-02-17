@@ -57,4 +57,5 @@ cmake --build build --parallel 12 --config Release
 chcp 65001
 
 .\build\bin\wordle_solver.exe words.txt hints.txt 5
+.\build\bin\wordle_auto_player.exe .\kaikkisanat.txt
 ```

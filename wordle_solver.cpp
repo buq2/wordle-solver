@@ -20,6 +20,10 @@ void WordleSolver::AddHint(const std::string &line)
     AddHintParts(hints);
 }
 
+void WordleSolver::AddHint(const tiny_utf8::string &hint) {
+    AddHint(hint.cpp_str());
+}
+
 void WordleSolver::AddHintsFromFile(const std::string &fname)
 {
     std::ifstream file(fname);

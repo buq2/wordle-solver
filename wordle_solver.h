@@ -9,6 +9,7 @@ class WordleSolver {
  public:
     WordleSolver(const int word_length = 5);
     void AddHint(const std::string &hint);
+    void AddHint(const tiny_utf8::string &hint);
     void AddHintsFromFile(const std::string &fname);
     void AddWordsFromFile(const std::string &fname);
     std::vector<tiny_utf8::string> GetPossibleSolutions();
